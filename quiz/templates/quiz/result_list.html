@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">我的成绩记录</li>
+{% endblock %}
+
+{% block content %}
+
+<h1>我的测验记录</h1>
+
+<h3>欢迎，{{user.get_username}} 通过课程数量：{% if user.record.lesson_finished %} {{ user.record.lesson_finished.all.count }} {% else %} 0 {% endif %}</h3>
+
+<div class="card-header text-white bg-dark py-2 px-3"><h4>已通过课程：</h4></div>
+<hr>
+
+{% for lesson in user.record.lesson_finished.all %}
+
+    <h4 class="text-success">
+        {{ lesson }}
+    </h4>
+
+{% endfor %}
+<hr>
+
+<div class="card-header text-white bg-dark py-2 px-3"><h4>测验成绩记录：</h4></div>
+<hr>
+
+{% if result_list %}
+
+<ul>
+    {% for result in result_list %}
+    <h4 class="{% if result.pass_or_not == 't' %}text-success{% else %}text-danger{% endif %}">
+        <p>{{result.quiz}} 成绩：{{result.score}} 分 {{result.time}}</p>
+    </h4>
+    {% endfor %}
+</ul>
+
+{% else %}
+<h4>你还没有完成测验的记录</h4>
+{% endif %}
+
+{% endblock %}

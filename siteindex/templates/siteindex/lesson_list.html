@@ -1,0 +1,89 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+{% block scripts %}
+<script src = "{% static 'siteindex/lesson.js' %}" defer></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">课程列表</li>
+{% endblock %}
+
+{% block content %}
+
+<!-- Modal -->
+<div class="modal fade" id="lessonStartModal" tabindex="-1" aria-labelledby="lessonStartModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="lessonStartModalLabel">课程详细信息</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body-confirm">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" id="start-button" class="btn btn-primary">进入课程</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="h1">课程列表</div>
+
+{% if user.lecturer %}
+  <h3>欢迎{{ user.lecturer.name }}老师，您可以浏览全部课程</h3>
+{% else %}
+  <h3>欢迎，{{user.get_username}} 通过课程数量：{% if user.record.lesson_finished %} {{ user.record.lesson_finished.all.count }} {% else %} 0 {% endif %}</h3>
+{% endif %}
+
+<div>
+
+  <div class="card-header text-white bg-dark py-2 px-3">课程介绍</div>
+
+  <div class="card mb-2">
+    <div class="card-body p-3">
+      <div class="row">
+        <div class="col-10">
+          <p>
+            {{syllabus.intro}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-header text-white bg-dark py-2 px-3">教学大纲</div>
+  <img src="{{ syllabus.image_url }}" style="max-height:450px;">
+
+</div>
+
+<hr>
+<div class="card-header text-white bg-dark py-2 px-3">课程列表</div>
+{% for lesson in lesson_list %}
+
+    <button
+        
+        class={% if lesson.precondition in user.record.lesson_finished.all %}"btn btn-link modal-button"{% elif lesson.precondition == None %}"btn btn-link modal-button"{% elif user.lecturer %}"btn btn-link modal-button"{% else %}"btn btn-link no-permission-button"{% endif %}
+        
+        data-pk="{{lesson.pk}}"
+        data-url="{{lesson.get_absolute_url}}"
+        data-title="{{lesson.title}}"
+        data-lecturer="{{lesson.lecturer}}"
+        data-status={% if lesson in user.record.lesson_finished.all %}"学习完毕"{% else %}"未完成学习"{% endif %}
+        data-precond="{{lesson.precondition}}"
+        data-precond-of="{{lesson.precond_of}}"
+
+        data-toggle="modal"
+        data-target="#lessonStartModal">
+
+        <h4> {{lesson.title}} </h4>
+
+    </button><br>
+
+{% endfor %}
+
+{% endblock %}

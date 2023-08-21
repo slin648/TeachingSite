@@ -1,0 +1,31 @@
+{% extends 'base_generic.html' %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">讨论板</li>
+{% endblock %}
+
+
+{% block content %}
+
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>课程</th>
+        <th>描述信息</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for board in boards %}
+        <tr>
+          <td>
+            <h3><a href="{% url 'board-topics' board.pk %}">{{ board }}</a></h3>
+          </td>
+          <td>
+            <p class="text-muted d-block">{{ board.description }}</p>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+{% endblock %}

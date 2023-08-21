@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">登录页</li>
+{% endblock %}
+
+{% block content %}
+
+<h2>登录用户账户</h2>
+
+<hr><br>
+
+{% if form.errors %}
+<small style="color: red">用户名/密码错误 请重试</small>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<small style="color: grey">账户无权限</small>
+{% else %}
+<small style="color: grey">请输入用户名和密码</small>
+{% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div>
+        <td>{{ form.username.label_tag }}</td><br>
+        <td>{{ form.username }}</td>
+    </div>
+    <br>
+    <div>
+        <td>{{ form.password.label_tag }}</td><br>
+        <td>{{ form.password }}</td>
+    </div>
+    <br>
+    <div>
+        <input type="submit" class="btn btn-primary" value="登录" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </div>
+</form>
+
+{% endblock %}

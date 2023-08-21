@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">讲师列表</li>
+{% endblock %}
+
+{% block content %}
+<h1>讲师列表</h1>
+
+<hr><br>
+
+{% if lecturer_list %}
+<ul>
+
+    {% for lecturer in lecturer_list %}
+    <h4>
+        <a href="{{ lecturer.get_absolute_url }}">{{ lecturer.name }}</a> ({{lecturer.title}})
+    </h4>
+    {% endfor %}
+
+</ul>
+{% else %}
+<h4>暂无讲师数据</h4>
+{% endif %}
+
+{% endblock %}

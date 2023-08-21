@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">主页</li>
+{% endblock %}
+
+{% block content %}
+<h1>计算机导论课程教学网站主页</h1>
+
+<p>欢迎来到 <strong>计算机导论课程教学网站</strong> </p>
+
+<div>
+    {% load static %}
+    <img src="{% static '/images/cover.png' %}" alt="cover" style="height:600px;" />
+</div>
+
+<h2>网站动态信息</h2>
+
+<p>本网站目前拥有:</p>
+<ul>
+    <li><strong>课程数量:</strong> {{ lesson_num }}</li>
+    <li><strong>讲师数量:</strong> {{ lecturer_num }}</li>
+</ul>
+
+{% endblock %}

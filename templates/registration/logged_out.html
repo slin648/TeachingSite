@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">已登出</li>
+{% endblock %}
+
+{% block content %}
+<br>
+<h3>已登出</h3>
+
+<hr><br>
+
+<h4><a href="{% url 'login'%}">重新登录</a></h4>
+
+{% endblock %}

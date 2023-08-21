@@ -1,0 +1,46 @@
+{% extends 'base_generic.html' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'board-home-view' %}">讨论板</a></li>
+    <li class="breadcrumb-item active">{{ board }}</li>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="card-header text-white bg-dark py-2 px-3">留言板描述信息</div>
+
+    <div class="card mb-2">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col-10">
+            {{ board.description }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+        <a href="{% url 'new-topic' board.pk %}" class="btn btn-primary">发表新的主题帖</a>
+    </div>
+
+    <table class="table">
+        <thead class="thead-inverse">
+        <tr>
+            <th>主题帖</th>
+            <th>发帖人</th>
+            <th>创建时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for topic in board.topics.all %}
+            <tr>
+            <td><a href="{% url 'topic-posts' board.pk topic.pk %}">{{ topic.subject }}</a></td>
+            <td>{{ topic.starter.username }}</td>
+            <td>{{ topic.created_at }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

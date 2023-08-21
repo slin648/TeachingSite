@@ -1,0 +1,65 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+{% block scripts %}
+<script src = "{% static 'quiz/main.js' %}" defer></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">测验列表</li>
+{% endblock %}
+
+{% block content %}
+
+<!-- Modal -->
+<div class="modal fade" id="quizStartModal" tabindex="-1" aria-labelledby="quizStartModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="quizStartModalLabel">确定开始该测验</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body-confirm">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" id="start-button" class="btn btn-primary">开始测验</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="h1">测验列表</div>
+
+<h3>欢迎，{{user.get_username}} 通过课程数量：{% if user.record.lesson_finished %} {{ user.record.lesson_finished.all.count }} {% else %} 0 {% endif %}</h3>
+
+<hr>
+
+{% for quiz in quiz_list %}
+
+<button
+
+    class={% if quiz.lesson.precondition in user.record.lesson_finished.all %}"btn btn-link modal-button"{% elif quiz.lesson.precondition == None %}"btn btn-link modal-button"{% else %}"btn btn-link no-permission-button"{% endif %}
+
+    data-pk="{{quiz.pk}}"
+    data-quiz="{{quiz.lesson}}"
+    data-questions="{{quiz.get_question_num}}"
+    data-time="{{quiz.time}}"
+    data-pass="{{quiz.required_score_to_pass}}"
+    
+    data-precond="{{quiz.lesson.precondition}}"
+    data-precond-of="{{quiz.lesson.precond_of}}"
+    
+    data-toggle="modal" 
+    data-target="#quizStartModal">
+
+    <h4> {{quiz.lesson}} </h4>
+
+</button><br>
+
+{% endfor %}
+
+{% endblock %}
